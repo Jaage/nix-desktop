@@ -195,6 +195,7 @@
     path-of-building
     solaar
     vim
+    wowup-cf
   ];
 
   programs.steam = {
