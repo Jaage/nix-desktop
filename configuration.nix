@@ -168,7 +168,7 @@
     zoxide
 
     # Fonts
-    # terminus_font
+    terminus_font
     nerd-fonts.terminess-ttf
 
     # Terminal
