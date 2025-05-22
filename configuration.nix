@@ -168,8 +168,8 @@
     zoxide
 
     # Fonts
-    terminus_font
-    nerd-fonts.terminess-ttf
+    nerd-fonts.proggy-clean-tt
+    nerd-fonts.gohufont
 
     # Terminal
     ghostty
