@@ -171,6 +171,9 @@
     nerd-fonts.proggy-clean-tt
     nerd-fonts.gohufont
 
+    # Formatters
+    nixfmt-rfc-style
+
     # Terminal
     ghostty
 
