@@ -2,33 +2,41 @@
 # your system. Help is available in the configuration.nix(5) man page, on
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
 
-{ config, pkgs, inputs, ... }:
+{
+  config,
+  pkgs,
+  inputs,
+  ...
+}:
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-    ];
+  imports = [
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+  ];
 
   # Flakes and binaries source
   nix.settings = {
     substituters = [ "https://aseipp-nix-cache.global.ssl.fastly.net" ];
-    experimental-features = [ "nix-command" "flakes" ];
+    experimental-features = [
+      "nix-command"
+      "flakes"
+    ];
   };
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.kernelPackages = pkgs.linuxPackages_cachyos;
-#  boot.kernelPackages = pkgs.linuxPackages;
-#  chaotic.scx.enable = true;
-#  chaotic.scx.scheduler = "scx_lavd";
-#  boot.kernelParams = [ "nvidia-drm.modeset=1" "nvidia-drm.fbdev=1" ];
+  #  boot.kernelPackages = pkgs.linuxPackages;
+  #  chaotic.scx.enable = true;
+  #  chaotic.scx.scheduler = "scx_lavd";
+  #  boot.kernelParams = [ "nvidia-drm.modeset=1" "nvidia-drm.fbdev=1" ];
 
   environment.sessionVariables = {
     MOZ_ENABLE_WAYLAND = 0;
     DXVK_HDR = 1;
-    MANGOHUD  = "1";
+    MANGOHUD = "1";
     MANGOHUD_CONFIGFILE = "/home/allmight/.config/MangoHud/MangoHud.conf";
   };
 
@@ -39,14 +47,14 @@
   nix.settings.auto-optimise-store = true;
 
   # Run
-#  programs.nix-ld = {
-#    enable = true;
-#    libraries = pkgs.steam-run.fhsenv.args.multiPkgs pkgs;
-#  };
+  #  programs.nix-ld = {
+  #    enable = true;
+  #    libraries = pkgs.steam-run.fhsenv.args.multiPkgs pkgs;
+  #  };
   programs.appimage.binfmt = true;
 
   networking.hostName = "ua"; # Define your hostname.
-  networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
+  networking.networkmanager.enable = true; # Easiest to use and most distros use this by default.
 
   # Set your time zone.
   time.timeZone = "America/Los_Angeles";
@@ -78,17 +86,20 @@
 
   # Graphics
   hardware.graphics = {
-    extraPackages = with pkgs; [ mangohud nvidia-vaapi-driver ];
+    extraPackages = with pkgs; [
+      mangohud
+      nvidia-vaapi-driver
+    ];
     extraPackages32 = with pkgs; [ mangohud ];
     enable = true;
     enable32Bit = true;
   };
   services.xserver.videoDrivers = [ "nvidia" ];
   hardware.nvidia = {
- #   modesetting.enable = true;
-#    powerManagement.enable = false;
+    #   modesetting.enable = true;
+    #    powerManagement.enable = false;
     open = true;
-#    nvidiaSettings = true;
+    #    nvidiaSettings = true;
     package = config.boot.kernelPackages.nvidiaPackages.beta;
   };
 
@@ -122,10 +133,13 @@
   };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
-   users.users.allmight = {
-     isNormalUser = true;
-     extraGroups = [ "network_manager" "wheel" ]; # Enable ‘sudo’ for the user.
-   };
+  users.users.allmight = {
+    isNormalUser = true;
+    extraGroups = [
+      "network_manager"
+      "wheel"
+    ]; # Enable ‘sudo’ for the user.
+  };
 
   # Enable direnv for caching dev environments
   programs.direnv.enable = true;
@@ -147,6 +161,7 @@
     bat
     btop
     eza
+    devenv
     fastfetch
     fd
     ffmpeg
@@ -203,17 +218,18 @@
   programs.zsh.enable = true;
   users.defaultUserShell = pkgs.zsh;
 
-  nixpkgs.overlays =
-    [
-      (final: prev: {
-        discord = prev.discord.overrideAttrs (old: {
-          buildInputs = (old.buildInputs or []) ++ [ final.makeWrapper ];
-          postInstall = (old.postInstall or "") + ''
+  nixpkgs.overlays = [
+    (final: prev: {
+      discord = prev.discord.overrideAttrs (old: {
+        buildInputs = (old.buildInputs or [ ]) ++ [ final.makeWrapper ];
+        postInstall =
+          (old.postInstall or "")
+          + ''
             wrapProgram $out/bin/discord --add-flags '--disable-gpu'
           '';
-        });
-      })
-    ];
+      });
+    })
+  ];
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -248,4 +264,3 @@
   # For more information, see `man configuration.nix` or https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion .
   system.stateVersion = "24.05"; # Did you read the comment?
 }
-
