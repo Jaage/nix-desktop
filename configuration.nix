@@ -17,10 +17,14 @@
 
   # Flakes and binaries source
   nix.settings = {
-    substituters = [ "https://aseipp-nix-cache.global.ssl.fastly.net" ];
     experimental-features = [
       "nix-command"
       "flakes"
+    ];
+    substituters = [ "https://aseipp-nix-cache.global.ssl.fastly.net" ];
+    trusted-users = [
+      "root"
+      "allmight"
     ];
   };
 
