@@ -169,6 +169,7 @@
     fastfetch
     fd
     ffmpeg
+    file
     fzf
     git
     gzip
