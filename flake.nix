@@ -6,6 +6,7 @@
     nil.url = "github:oxalica/nil";
     nil.inputs.nixpkgs.follows = "nixpkgs";
     nixvim.url = "github:Jaage/nixvim";
+    nixvim.inputs.nixpkgs.follows = "nixpkgs";
     # stylix.url = "github:danth/stylix";
     # zig-overlay.url = "github:mitchellh/zig-overlay";
     # zig-overlay.inputs.nixpkgs.follows ="nixpkgs";
